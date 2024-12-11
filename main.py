@@ -1,14 +1,19 @@
 import requests as req
+from urllib.parse import urljoin
 
 
 with open("api.txt", "r") as api_key:
     API_KEY = api_key.read()
 
 params = {"access_token": API_KEY,
-          "v": "5.199"}
+          "v": 5.199
+        }
+param = {"url": "https://api.vk.ru/method/utils.getServerTime",
+         "access_token": API_KEY,
+         "v": 5.199}
 
-response = req.get(url="https://api.vk.ru/method/utils.getServerTime", params=params)
-response.raise_for_status()
-print(response.ok)
-print(response.text)
+shorter_url = req.get("https://api.vk.ru/method/utils.getShortLink", params=param).text
+response = req.get(shorter_url, params=params)
+
+print(response.text)#.get("response").get("short_url"))
 
